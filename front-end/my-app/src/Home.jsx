@@ -355,6 +355,7 @@ setGroupedValue((prev) => {
           setIsLoader(true);          
       api.post('https://vendor-sales.onrender.com/send-bill', {data});
       toast.info("Bill generated and sent to customer successfully!");
+      window.open(response.data.whatsappLink);
     } catch (error) {
       console.log(error);
       toast.error("Error sending bill to customer");

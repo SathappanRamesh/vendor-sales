@@ -206,13 +206,6 @@ await Users.updateOne(
   {
     $push: {
       [`customers.${index}.bills.${year}.${month}.${date}`]: currentBillData,
-      history: {
-        bill: currentBillData,
-        date: `${date}-${month}-${year}`,
-        time: data.bill.time,
-        totalAmountBought: data.bill.totalAmount,
-        billUrl: "https://res.cloudinary.com/dv4t3wqzj/raw/upload/v1701367377/table.pdf"
-      }
     },
     $inc: {
       [`customers.${index}.totalArrivals`]: 1,

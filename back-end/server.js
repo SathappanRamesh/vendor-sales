@@ -210,6 +210,7 @@ app.post("/send-bill", authenticateUser, async (req, res) => {
             },
             $push: {
               [`.history`]: {
+                name: data.customerData.name,
                 bill: currentBillData,
                 date: `${date}-${month}-${year}`,
                 time: data.bill.time,

@@ -1,14 +1,10 @@
 import api from "../api/axios";
 import styles from './Login.module.css'
-import { useState, useEffect} from "react";
+import { useState} from "react";
 import { Link, useNavigate, } from 'react-router-dom';
 function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [sampleUser, setSampleUser] = useState({
-    email: "demo@mysite.com",
-    password: 'demo123'
-  });
   const [isLoader, setIsLoader] = useState(false);
   const navigate = useNavigate();
   
@@ -16,7 +12,7 @@ function Login() {
     e.preventDefault();
     setIsLoader(true);
     try {
-      const response = await api.post("http://localhost:3000/login", { email, password });
+      const response = await api.post("https://vendor-sales.onrender.com/login", { email, password });
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         navigate('/home', { replace: true });

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import styles from "./Layout.module.css"
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { UserDataContext } from './UserDataContext.jsx';
@@ -9,9 +9,6 @@ function Layout() {
   const [navOpen, setNaveOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
-  const [token, setToken] = useState(
-    () => localStorage.getItem("token")
-  );
 
     const [isGuideShow, setIsGuideShow] = useState(   )
     
@@ -22,7 +19,7 @@ function Layout() {
     const  handleCloseGuide = (e) => {
                       e.preventDefault();
           try {
-        api.post('http://localhost:3000/close-guide');
+        api.post('https://vendor-sales.onrender.com/close-guide');
       setIsGuideShow(false);
       localStorage.setItem("showGuide", Boolean(false))
       } catch (error) {
@@ -41,7 +38,6 @@ function Layout() {
   const handleLogOut = () => {
     localStorage.removeItem("token");
     console.log("op");
-    setToken(null); 
     navigate('/login');
   }
 

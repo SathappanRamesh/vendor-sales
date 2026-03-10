@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useContext} from "react";
-import { useLocation,Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import styles from './Home.module.css';
 import { UserDataContext } from './UserDataContext.jsx';
@@ -32,30 +32,13 @@ function Home() {
   });
   const [isGuideShow, setIsGuideShow] = useState(   )
 const calcInputRef = useRef(null);
-  const location = useLocation();
   console.log(userData);
   
   useEffect(() => {
 setIsGuideShow(localStorage.getItem("showGuide") === "true" ? true : false);
   },[])
 
-  const  handleCloseGuide = (e) => {
-                    e.preventDefault();
-        try {
-      api.post('http://localhost:3000/close-guide', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          }
-      });
-    setIsGuideShow(false);
-    localStorage.setItem("showGuide", Boolean(false))
-      toast.info("closed");
-    } catch (error) {
-      console.log(error);
-      toast.error("Error sending bill to customer");
-    }
-  }
+  
 useEffect(() => {    
   // Set customer data when selected from search
   if(customerData.name.length > 0) {
@@ -370,7 +353,7 @@ setGroupedValue((prev) => {
     }
     try {
           setIsLoader(true);          
-      api.post('http://localhost:3000/send-bill', {data});
+      api.post('https://vendor-sales.onrender.com/send-bill', {data});
       toast.info("Bill generated and sent to customer successfully!");
     } catch (error) {
       console.log(error);

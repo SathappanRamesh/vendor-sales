@@ -13,7 +13,7 @@ function MyItems() {
         // Fetch my items from the server and setMyItems
             const fetchMyItems = async () => {
         try {
-          const response = await api.get("http://localhost:3000/get-my-items", {
+          const response = await api.get("https://vendor-sales.onrender.com/get-my-items", {
             headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -60,7 +60,7 @@ const handleStoreItems = async () => {
   }
 
   try {
-    await api.post("http://localhost:3000/store-items",);
+    await api.post("https://vendor-sales.onrender.com/store-items",);
     // Update myItems with the new items
     setMyItems(prevItems => [...prevItems, ...newItems]);
     if (duplicateItems.length > 0) {

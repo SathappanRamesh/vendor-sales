@@ -34,7 +34,7 @@ useEffect(() => {
     
           const fetchUserData = async () => {
         try {
-          const response = await api.get("http://localhost:3000/get-user-data")
+          const response = await api.get("https://vendor-sales.onrender.com/get-user-data")
           setData(response.data.userData);
         } catch (error) {
           console.log("Error getting user data:", error); 

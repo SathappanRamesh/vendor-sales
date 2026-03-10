@@ -7,7 +7,7 @@ function History() {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const response = await api.get("http://localhost:3000/get-history");
+                const response = await api.get("https://vendor-sales.onrender.com/get-history");
                 const data = await response.data;
                 // Sort history by date and time, most recent first
                 let sortedData = data?.userHistory?.history.sort((a, b) => {

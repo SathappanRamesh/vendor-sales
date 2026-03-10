@@ -28,7 +28,7 @@ function VerificationCode() {
 
     try {
       const verificationCode = code.join('');
-      const response = await api.post('http://localhost:3000/verify-code', {
+      const response = await api.post('https://vendor-sales.onrender.com/verify-code', {
         email,
         code: verificationCode,
       });

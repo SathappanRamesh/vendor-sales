@@ -34,7 +34,7 @@ useEffect(() => {
   const fetchUserPersonalData = async () => {
     try {
 
-      const response = await api.get("http://localhost:3000/get-user-personal-data");
+      const response = await api.get("https://vendor-sales.onrender.com/get-user-personal-data");
       const data = response.data;
 
       if (data.userPersonalInfo?.personalInfo) {
@@ -64,7 +64,7 @@ useEffect(() => {
     console.log(field, changedData);
     
     try {
-    api.post("http://localhost:3000/change-user-info",{field, changedData})    
+    api.post("https://vendor-sales.onrender.com/change-user-info",{field, changedData})    
     } catch (error) {
       console.log("Error logging in:", error);
     }

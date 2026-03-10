@@ -1,6 +1,6 @@
 import React from "react";
 import styles from './Register.module.css'
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import {Link, useNavigate } from 'react-router-dom';
 import api from "../api/axios";
 
@@ -73,7 +73,7 @@ function Register() {
             return;
         }
         try {
-            const response = await api.post('http://localhost:3000/register', {user})
+            const response = await api.post('https://vendor-sales.onrender.com/register', {user})
             console.log(response.data);
                   localStorage.setItem('verificationEmail', response.data.email);
             localStorage.setItem("showGuide", true);

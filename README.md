@@ -16,7 +16,7 @@ https://vendor-sales343.netlify.app
 
 ## Demo
 
-![Quiz Demo](demo/quiz-app-demo-gif.gif)
+![Vendor-Sales Demo](demo/vendor-sales-demo.gif)
 
 ## Tech Stack
 

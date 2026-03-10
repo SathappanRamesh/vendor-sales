@@ -49,7 +49,32 @@ function Login() {
   /></span>
 <div className={styles.tooltipContainer}>
   <span className={styles.tooltip}>LogIn free Access</span>
-  <span onClick={(e) => [setEmail("demo@mysite.com"), setPassword("demo123"), handleSubmit(e)]} className={styles.text}>Demo Account</span>
+<span
+  onClick={async () => {
+    setIsLoader(true);
+    try {
+      const response = await api.post(
+        "https://vendor-sales.onrender.com/login",
+        {
+          email: "demo@mysite.com",
+          password: "demo123",
+        }
+      );
+
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/home", { replace: true });
+      }
+    } catch (error) {
+      console.log("error logging in:", error);
+    } finally {
+      setIsLoader(false);
+    }
+  }}
+  className={styles.text}
+>
+  Demo Account
+</span>
 </div>
 
   <input className={styles.submit} type="submit" value="Log In" />

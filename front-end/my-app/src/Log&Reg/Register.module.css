@@ -120,7 +120,7 @@ html, body {
 /* Page Background */
 .glass {
   min-height: 100vh;
-  background-image: url('/images/grocery.png');
+  background-image: url('https://techcrunch.com/wp-content/uploads/2015/03/groceries-e1554037962210.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -230,12 +230,12 @@ html, body {
 .regSubmitBtn {
   width: 100%;
   padding: 11px;
-
-  background: linear-gradient(
+  background-color: blueviolet;
+  /* background: linear-gradient(
     135deg,
     #4CAF50,
     #2e7d32
-  );
+  ); */
 
   border: none;
   border-radius: 8px;

@@ -77,7 +77,7 @@ console.log();
     <>
     <div className={styles.profileContainer}>
       <div className={styles.profileImageContainer}>
-        <img className={styles.profileImg} src="/images/vendor.png" alt="" />
+        <img className={styles.profileImg} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS2GJyQyRmogBPCOIWGGlqY9cRD4RXGfTXyg&s" alt="" />
         <div>
         <h2 className={styles.profileName}>{basicInfo?.username?.toLocaleUpperCase()}</h2>
         <h6 className={styles.ownerId}>Shop: {basicInfo?.shopName}</h6>

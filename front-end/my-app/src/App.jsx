@@ -49,6 +49,8 @@ useEffect(() => {
       <Route path='register' element={<Register/>} />
       <Route path='verify' element={<Verification/>}/>
 
+  <Route path="profile" element={<Profile />} />
+  <Route path="profile/:section" element={<Profile />} />
       {/* Protected Routes */}
       <Route element={
           <PrivateRoute>
@@ -57,8 +59,6 @@ useEffect(() => {
         }>
   <Route index element={<Home />} />
   <Route path="home" element={<Home />} />
-  <Route path="profile" element={<Profile />} />
-  <Route path="profile/:section" element={<Profile />} />
   <Route path="customers" element={<Customers />} />
   <Route path="sales" element={<Sales />} />
   <Route path="history" element={<History />} />

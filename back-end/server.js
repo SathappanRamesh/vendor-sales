@@ -493,13 +493,6 @@ tableData.push({
         type: "upload",
         access_mode: "public",
     });
-    
-    await client.messages.create({
-      from: "whatsapp:+14155238886",
-      to: `whatsapp:+91${data.customerData.phoneNo}`,
-      body: "📄 Your grocery bill is ready",
-      mediaUrl: [uploadResult.secure_url]
-    });
 //
 const phone = data.customerData.phoneNo;
 const pdfUrl = uploadResult.secure_url;

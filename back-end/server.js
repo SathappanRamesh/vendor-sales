@@ -500,7 +500,12 @@ tableData.push({
       body: "📄 Your grocery bill is ready",
       mediaUrl: [uploadResult.secure_url]
     });
+//
+const phone = data.customerData.phoneNo;
+const pdfUrl = uploadResult.secure_url;
 
+const whatsappLink = `https://wa.me/${phone}?text=${encodeURIComponent(pdfUrl)}`;
+      
             await Users.updateOne(
           { _id: userId },
           {
@@ -520,7 +525,8 @@ tableData.push({
     res.json({
       success: true,
       message: "PDF Generated & Sent to WhatsApp",
-      cloud_url: uploadResult.secure_url
+      cloud_url: uploadResult.secure_url,
+      whatsappLink
     });
       user.markModified('profile');
       await user.save();

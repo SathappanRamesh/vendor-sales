@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://iridescent-chaja-88ab25.netlify.app/',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
@@ -79,7 +79,7 @@ const authenticateUser = (req, res, next) => {
 
 app.post('/register', async (req, res) => {
     const { user } = req.body;
-    
+
     const username = user.username;
     const email = user.email;
     const password = user.password;
@@ -157,11 +157,11 @@ app.post('/login', async (req, res) => {
 
 app.post('/verify-code', async (req, res) => {
   const { email, code } = req.body;
-  
+
   try {
     const temporaryUser = await TemporaryUsersModel.findOne({ email: email, fourDigitCode: code });
     console.log(temporaryUser);
-    
+
     if (temporaryUser) {
       const newUser = new Users({
         username: temporaryUser.username,
@@ -185,131 +185,19 @@ app.post('/verify-code', async (req, res) => {
   }
 });
 
-app.post("/send-bill-to-customer", async (req, res) => {
-  try {
-
-    function generateTablePDF(filename, tableData, otherBillDetails) {
-      const doc = new PDFDocument({ margin: 50 });
-      const writeStream = fs.createWriteStream(filename);
-      doc.pipe(writeStream);
-
-      const columnWidth = 100;
-      const rowHeight = 28;
-      const tableX = 50;
-      let y = 140;
-
-      // shop title
-      doc.fontSize(22).font("Helvetica-Bold")
-        .text("ABC GROCERIES", { align: "center" });
-
-      const pageWidth = doc.page.width;
-      const margin = 50;
-
-      // bill details
-      doc.fontSize(14).font("Helvetica-Bold");
-      doc.text("NAME: RAMASWAMY", margin, 80);
-
-      let dateText = "DATE: 12/1/2023";
-      let dateWidth = doc.widthOfString(dateText);
-      doc.text(dateText, pageWidth - margin - dateWidth, 80);
-
-      doc.text("BILL NO: 12D837FHJFD78K34J", margin, 105);
-
-      let timeText = "TIME: 3:48 PM";
-      let timeWidth = doc.widthOfString(timeText);
-      doc.text(timeText, pageWidth - margin - timeWidth, 105);
-
-      // table header
-      const columns = ["no", "name", "price", "qty", "amount"];
-      doc.fontSize(12).font("Helvetica-Bold");
-
-      columns.forEach((col, i) => {
-        const x = tableX + i * columnWidth;
-        doc.rect(x, y, columnWidth, rowHeight).fillAndStroke("#e0e0e0", "#000");
-        doc.fill("#000").text(col.toUpperCase(), x + 10, y + 8);
-      });
-
-      y += rowHeight;
-      doc.font("Helvetica").fontSize(12);
-
-      tableData.forEach((row, index) => {
-        const isLastRow = index === tableData.length - 1;
-
-        columns.forEach((col, i) => {
-          const x = tableX + i * columnWidth;
-          let fillColor = index % 2 ? "#f9f9f9" : "#ffffff";
-          if (isLastRow) fillColor = "#d4ffd4";
-
-          doc.rect(x, y, columnWidth, rowHeight)
-            .fillAndStroke(fillColor, "#000");
-
-          let text = row[col] !== undefined ? String(row[col]) : "";
-          doc.fill("#000").text(text, x + 10, y + 8);
-        });
-
-        y += rowHeight;
-      });
-
-      doc.end();
-
-      return new Promise((resolve, reject) => {
-        writeStream.on("finish", () => resolve(filename));
-        writeStream.on("error", reject);
-      });
-    }
-
-    const tableData = [
-      { no: 1, name: "Apple", price: 50, qty: 3, amount: 150 },
-      { no: 2, name: "Banana", price: 20, qty: 10, amount: 200 },
-      { no: 3, name: "Milk", price: 40, qty: 2, amount: 80 },
-      { no: "", name: "TOTAL", price: "", qty: "", amount: 430 }
-    ];
-
-    const pdfPath = await generateTablePDF("table.pdf", tableData);
-
-    const uploadResult = await cloudinary.uploader.upload(pdfPath, {
-      resource_type: "raw",
-      format: "pdf",
-      use_filename: true,
-      unique_filename: false,
-        resource_type: "raw",
-  type: "upload",
-  access_mode: "public",
-    });
-    
-    await client.messages.create({
-      from: "whatsapp:+14155238886",
-      to: "whatsapp:+919159053487",
-      body: "📄 Your grocery bill is ready",
-      mediaUrl: [uploadResult.secure_url]
-    });
-
-    res.json({
-      success: true,
-      message: "PDF Generated & Sent to WhatsApp",
-      cloud_url: uploadResult.secure_url
-    });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "PDF Generation Error", error });
-  }
-});
-
-
 app.post("/send-bill", authenticateUser, async (req, res) => {
     const {data} = req.body;
-    
+
       const userId = req.user.userId;
     try {
        const year = new Date().getFullYear(), month = new Date().toLocaleString('en-IN', { month: 'long' }), date = new Date().getDate();
       const time = new Date().toLocaleTimeString();
       const user = await Users.findOne({_id: userId});
-
+      const customerPhoneNumber = data.customerData.phoneNo;
       let isCustomerExist = user.customers.findIndex((prev) => {
         return prev?.phoneNo == data.customerData.phoneNo
-      }) 
-      
+      })
+
       if ( isCustomerExist !== -1) {// If customer exists
         let index = isCustomerExist;
         let currentBillData = data.bill;
@@ -336,7 +224,7 @@ app.post("/send-bill", authenticateUser, async (req, res) => {
             }
           }
         );
-      } else {    // If customer does not exist    
+      } else {    // If customer does not exist
         console.log("user doen not");
         let currentBillData = data.bill;
         user.customers.push({
@@ -493,10 +381,10 @@ tableData.push({
         type: "upload",
         access_mode: "public",
     });
-    
+
     await client.messages.create({
       from: "whatsapp:+14155238886",
-      to: "whatsapp:+919159053487",
+      to: `whatsapp:+91${customerPhoneNumber?.toString}`,
       body: "📄 Your grocery bill is ready",
       mediaUrl: [uploadResult.secure_url]
     });
@@ -532,10 +420,10 @@ tableData.push({
 app.post("/change-user-info", authenticateUser, async (req, res) => {
   const {field, changedData} = req.body;
   console.log(field, changedData);
-  
+
   const userId = req.user.userId;
   try {
-  const user = await Users.findOne({_id: userId});  
+  const user = await Users.findOne({_id: userId});
 
   await Users.updateOne(
   { _id: userId },
@@ -552,7 +440,7 @@ app.post("/change-user-info", authenticateUser, async (req, res) => {
 app.get("/get-user-data", authenticateUser,  async (req, res) => {
     const userId = req.user.userId;
     try {
-      const user = await Users.findOne({_id: userId}, { password: 0, email: 0 });  
+      const user = await Users.findOne({_id: userId}, { password: 0, email: 0 });
       res.status(200).json({userData: user});
     } catch (error) {
       res.status(500).json({error: "Error fetching user data"})
@@ -560,7 +448,7 @@ app.get("/get-user-data", authenticateUser,  async (req, res) => {
 });
 
 app.get("/get-user-personal-data", authenticateUser,  async (req, res) => {
-    const userId = req.user.userId;    
+    const userId = req.user.userId;
     try {
 const user = await Users.findOne(
   { _id: userId },
@@ -589,7 +477,7 @@ app.post("/close-guide", authenticateUser,  async (req, res) => {
 app.get("/get-history", authenticateUser,  async (req, res) => {
     const userId = req.user.userId;
     try {
-      const user = await Users.findOne({_id: userId}, { history: 1, _id: 0 });  
+      const user = await Users.findOne({_id: userId}, { history: 1, _id: 0 });
       res.status(200).json({userHistory: user});
     } catch (error) {
       res.status(500).json({error: "Error fetching user history"})
@@ -599,7 +487,7 @@ app.get("/get-history", authenticateUser,  async (req, res) => {
 app.post("/store-items", authenticateUser, async (req, res) => {
     const { items } = req.body;
     console.log(items);
-    
+
     const userId = req.user.userId;
     try {
       await Users.updateOne(
@@ -615,9 +503,9 @@ app.post("/store-items", authenticateUser, async (req, res) => {
 app.get("/get-my-items", authenticateUser, async (req, res) => {
     const userId = req.user.userId;
     try {
-      const user = await Users.findOne({_id: userId}, { myItems: 1, _id: 0 });  
+      const user = await Users.findOne({_id: userId}, { myItems: 1, _id: 0 });
       console.log(user);
-      
+
       res.status(200).json({ myItems: user.myItems });
     } catch (error) {
       res.status(500).json({ error: "Error fetching items" });

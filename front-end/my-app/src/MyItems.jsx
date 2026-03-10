@@ -60,9 +60,10 @@ const handleStoreItems = async () => {
   }
 
   try {
-    await api.post("https://vendor-sales.onrender.com/store-items",);
+    const items = newItems
+    await api.post("https://vendor-sales.onrender.com/store-items",{items});
     // Update myItems with the new items
-    setMyItems(prevItems => [...prevItems, ...newItems]);
+    setMyItems( prevItems => [...prevItems, ...newItems]);
     if (duplicateItems.length > 0) {
         setError(true);
       console.warn("Skipped duplicates:", duplicateItems);

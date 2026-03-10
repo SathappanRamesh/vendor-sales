@@ -201,30 +201,25 @@ app.post("/send-bill", authenticateUser, async (req, res) => {
       if ( isCustomerExist !== -1) {// If customer exists
         let index = isCustomerExist;
         let currentBillData = data.bill;
-        await Users.updateOne(
-          { _id: userId },
-          {
-            // Adding bill to existing customer
-            $push: {
-              [`customers.${index}.bills.${year}.${month}.${date}`]: currentBillData
-            },
-            $push: {
-              [`.history`]: {
-                name: data.customerData.name,
-                bill: currentBillData,
-                date: `${date}-${month}-${year}`,
-                time: data.bill.time,
-                totalAmountBought: data.bill.totalAmount,
-                billUrl: "https://res.cloudinary.com/dv4t3wqzj/raw/upload/v1701367377/table.pdf",
-              }
-            },
-            // Storing total arrivals and total amount bought by customer
-            $inc: {
-              [`customers.${index}.totalArrivals`]: 1,
-              [`customers.${index}.totalAmountBought`]: data.bill.totalAmount
-            }
-          }
-        );
+await Users.updateOne(
+  { _id: userId },
+  {
+    $push: {
+      [`customers.${index}.bills.${year}.${month}.${date}`]: currentBillData,
+      history: {
+        bill: currentBillData,
+        date: `${date}-${month}-${year}`,
+        time: data.bill.time,
+        totalAmountBought: data.bill.totalAmount,
+        billUrl: "https://res.cloudinary.com/dv4t3wqzj/raw/upload/v1701367377/table.pdf"
+      }
+    },
+    $inc: {
+      [`customers.${index}.totalArrivals`]: 1,
+      [`customers.${index}.totalAmountBought`]: data.bill.totalAmount
+    }
+  }
+);
       } else {    // If customer does not exist
         console.log("user doen not");
         let currentBillData = data.bill;

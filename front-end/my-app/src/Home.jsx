@@ -353,9 +353,9 @@ setGroupedValue((prev) => {
     }
     try {
           setIsLoader(true);          
-      const response = api.post('https://vendor-sales.onrender.com/send-bill', {data});
+      const response = await api.post('https://vendor-sales.onrender.com/send-bill', {data});
       toast.info("Bill generated and sent to customer successfully!");
-            console.log(response);
+            console.log("Res:" ,response);
       window.location.href = response.data.whatsappLink;
     } catch (error) {
       console.log(error);

@@ -378,7 +378,7 @@ tableData.push({
         access_mode: "public",
     });
 //
-const phone = data.customerData.phoneNo;
+const phone = `91${data.customerData.phoneNo}`;
 const pdfUrl = uploadResult.secure_url;
 
 const whatsappLink = `https://wa.me/${phone}?text=${encodeURIComponent(pdfUrl)}`;
